@@ -1,0 +1,53 @@
+// CCMP 606 Assignment 2
+// MyOracle contract for getting the price of Ether in USD
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
+contract MyOracle {
+    address public owner; // Owner of the contract (deployer)
+    uint256 public ethPriceUSD; // Stores ETH price in USD
+
+    // Events to notify listeners when price updates or requests are made
+    event PriceUpdated(uint256 newPrice);
+    event RequestPriceUpdate();
+
+    /**
+     * @dev Sets the contract deployer as the owner.
+     */
+    constructor() {
+        owner = msg.sender;
+    }
+
+    /**
+     * @dev Modifier to allow only the owner to execute specific functions.
+     */
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not authorized");
+        _;
+    }
+
+    /**
+     * @dev Updates the stored ETH price (onlyOwner can update).
+     * Emits a `PriceUpdated` event after updating the price.
+     * @param _price The new ETH price in USD (multiplied by 100 for precision).
+     */
+    function setETHUSD(uint256 _price) public onlyOwner {
+        ethPriceUSD = _price;
+        emit PriceUpdated(_price);
+    }
+
+    /**
+     * @dev Returns the latest ETH price stored in the contract.
+     */
+    function getETHUSD() public view returns (uint256) {
+        return ethPriceUSD;
+    }
+
+    /**
+     * @dev Emits a `RequestPriceUpdate` event when an update request is made.
+     * This event is monitored by the off-chain oracle node.
+     */
+    function requestUpdate() public {
+        emit RequestPriceUpdate();
+    }
+}
