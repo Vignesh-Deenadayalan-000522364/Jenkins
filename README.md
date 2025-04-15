@@ -1,1 +1,1 @@
-After mutiple try, its working
+GitPush from CMD
