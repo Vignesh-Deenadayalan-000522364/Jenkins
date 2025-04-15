@@ -1,1 +1,1 @@
-GitPush from CMD
+Pushed the file from CMD and checking if it triggers the build.
